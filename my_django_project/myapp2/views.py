@@ -4,7 +4,14 @@ from .models import Client, Product, Order
 from datetime import datetime, date, time, timedelta
 from django.utils import timezone 
 
+
+
+
 def full_orders(request, client_id):
+    '''
+    Выводит всесь список заказанных  пользователем товаров за все время использования магазина
+
+    '''
     client_orders = set()
     client = get_object_or_404(Client, pk=client_id)
     for order in  Order.objects.filter(customer=client).all().iterator():
@@ -16,6 +23,9 @@ def full_orders(request, client_id):
 
 
 def full_orders_month_year_day(request, client_id, year, month, day_start, day_end):
+    '''
+    Выводит весь список заказанных  пользователем товаров за определенный период день/неделю/месяц
+    '''
     date_start = datetime.combine(date(year, month, day_start), time.min)
     date_end = datetime.combine(date(year, month, day_end), time.max)
     client_orders = set()
@@ -29,6 +39,9 @@ def full_orders_month_year_day(request, client_id, year, month, day_start, day_e
 
 
 def full_orders_year(request, client_id, year):
+    '''
+    Выводит весь список заказанных пользователем товаров за конкретный год
+    '''
     client_orders = set()
     client = get_object_or_404(Client, pk=client_id)
     for order in  Order.objects.filter(date_ordered__year=year).iterator():
@@ -38,7 +51,13 @@ def full_orders_year(request, client_id, year):
                 client_orders.add(item.product_name)
     return render(request,'myapp2/list_orders.html', {'client_orders': client_orders }) 
 
+
+
+
 def full_orders_day(request, client_id):
+    '''
+    Выводит весь список заказанных  пользователем товаров за определенный период день с учетом часового пояса
+    '''
     client_orders = set()
     client = get_object_or_404(Client, pk=client_id)
     now = timezone.now()
@@ -50,10 +69,16 @@ def full_orders_day(request, client_id):
                 client_orders.add(item.product_name)
     return render(request,'myapp2/list_orders.html', {'client_orders': client_orders }) 
 
-def full_orders_month(request, client_id, month):
+
+
+
+def full_orders_month(request, client_id, month, year):
+    '''
+     Выводит весь список заказанных пользователем товаров за определенный месяц в конкретном году
+    '''
     client_orders = set()
     client = get_object_or_404(Client, pk=client_id)
-    for order in  Order.objects.filter(date_ordered__month=month).iterator():
+    for order in  Order.objects.filter(date_ordered__year=year, date_ordered__month=month).iterator():
         product = order.products.all()
         for item in product:
             if item.id is not client_orders:
