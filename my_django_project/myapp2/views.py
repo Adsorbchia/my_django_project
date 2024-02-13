@@ -19,7 +19,7 @@ def full_orders(request, client_id):
         for item in product:
             if item.id is not client_orders:
                 client_orders.add(item.product_name)
-    return render(request,'myapp2/list_orders.html', {'client_orders': client_orders })
+    return render(request,'myapp2/list_orders.html', {'client': client,'client_orders': client_orders })
 
 
 def full_orders_month_year_day(request, client_id, year, month, day_start, day_end):
@@ -35,7 +35,7 @@ def full_orders_month_year_day(request, client_id, year, month, day_start, day_e
         for item in product:
             if item.id is not client_orders:
                 client_orders.add(item.product_name)
-    return render(request,'myapp2/list_orders.html', {'client_orders': client_orders })
+    return render(request,'myapp2/list_orders.html', {'client': client,'client_orders': client_orders })
 
 
 def full_orders_year(request, client_id, year):
@@ -49,7 +49,7 @@ def full_orders_year(request, client_id, year):
         for item in product:
             if item.id is not client_orders:
                 client_orders.add(item.product_name)
-    return render(request,'myapp2/list_orders.html', {'client_orders': client_orders }) 
+    return render(request,'myapp2/list_orders.html', {'client': client,'client_orders': client_orders }) 
 
 
 
@@ -67,7 +67,7 @@ def full_orders_day(request, client_id):
         for item in product:
             if item.id is not client_orders:
                 client_orders.add(item.product_name)
-    return render(request,'myapp2/list_orders.html', {'client_orders': client_orders }) 
+    return render(request,'myapp2/list_orders.html', {'client': client, 'client_orders': client_orders }) 
 
 
 
@@ -83,4 +83,4 @@ def full_orders_month(request, client_id, month, year):
         for item in product:
             if item.id is not client_orders:
                 client_orders.add(item.product_name)
-    return render(request,'myapp2/list_orders.html', {'client_orders': client_orders }) 
+    return render(request,'myapp2/list_orders.html', {'client': client,'client_orders': client_orders }) 
