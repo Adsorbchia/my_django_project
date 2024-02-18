@@ -1,6 +1,9 @@
 from django.db import models
 
 
+
+
+
 class Client(models.Model):
     username = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
@@ -19,6 +22,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     quantity = models.IntegerField()
     date_of_addition = models.DateTimeField(auto_now_add=True)
+    picture = models.ImageField(upload_to='images/', default='')
+ 
 
     def __str__(self):
         return f'product_name:{self.product_name}, description :{self.description}'

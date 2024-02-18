@@ -3,6 +3,11 @@ from django.http import HttpResponse, JsonResponse
 from .models import Client, Product, Order
 from datetime import datetime, date, time, timedelta
 from django.utils import timezone 
+import logging
+from django.core.files.storage import FileSystemStorage
+from .forms import ImageForm
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -84,3 +89,19 @@ def full_orders_month(request, client_id, month, year):
             if item.id is not client_orders:
                 client_orders.add(item.product_name)
     return render(request,'myapp2/list_orders.html', {'client': client,'client_orders': client_orders }) 
+
+
+def upload_image(request, product_id):
+    product = Product.objects.filter(pk=product_id).first()
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.cleaned_data['image']
+            fs = FileSystemStorage()
+            fs.save(image.name, image)
+            product.picture = image.name
+            product.save()
+            
+    else:
+        form = ImageForm()
+    return render(request, 'myapp2/upload_image_product.html', {'form':form})
