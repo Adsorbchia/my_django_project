@@ -96,12 +96,12 @@ def upload_image(request, product_id):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            image = form.cleaned_data['image']
-            fs = FileSystemStorage()
-            fs.save(image.name, image)
-            product.picture = image.name
+            picture = form.cleaned_data['picture']
+            product.picture = picture.name
             product.save()
-            
+            fs = FileSystemStorage()
+            fs.save(product.picture, picture)
+                   
     else:
         form = ImageForm()
     return render(request, 'myapp2/upload_image_product.html', {'form':form})

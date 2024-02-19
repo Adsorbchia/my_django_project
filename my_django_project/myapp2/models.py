@@ -22,7 +22,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     quantity = models.IntegerField()
     date_of_addition = models.DateTimeField(auto_now_add=True)
-    picture = models.ImageField(upload_to='images/', default='')
+    picture = models.ImageField(upload_to='images/', blank=True, default='')
  
 
     def __str__(self):
