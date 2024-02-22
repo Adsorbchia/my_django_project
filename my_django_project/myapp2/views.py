@@ -7,6 +7,7 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from .forms import ImageForm
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -92,15 +93,18 @@ def full_orders_month(request, client_id, month, year):
 
 
 def upload_image(request, product_id):
-    product = Product.objects.filter(pk=product_id).first()
+ 
+    product_current = Product.objects.get(pk=product_id)
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            picture = form.cleaned_data['picture']
-            product.picture = picture.name
-            product.save()
-            fs = FileSystemStorage()
-            fs.save(product.picture, picture)
+            product = form.save(commit=False)
+            product.picture = form.cleaned_data['picture']
+            product_current.picture = product.picture
+            product_current.save()
+          
+            # fs = FileSystemStorage()
+            # fs.save(product.picture, picture)
                    
     else:
         form = ImageForm()
