@@ -111,6 +111,10 @@ def upload_image(request, product_id):
         form = ImageForm()
     return render(request, 'myapp2/upload_image_product.html', {'form':form})
 
+def index(request):
+    return render(request, 'myapp2/index.html')
+
+
 
 def total_in_db(request):
     total = Product.objects.aggregate(Sum('quantity'))

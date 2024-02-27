@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from myapp2 import views
 
 
 urlpatterns = [
@@ -25,6 +26,7 @@ urlpatterns = [
     path('myapp2/', include('myapp2.urls')),
     path('les3/', include('maapp3.urls')),
     # path('__debug__/', include("debug_toolbar.urls")), 
+    path('', views.index, name='index')
 ]
 
 if settings.DEBUG:
