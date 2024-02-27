@@ -6,6 +6,7 @@ from django.utils import timezone
 import logging
 from django.core.files.storage import FileSystemStorage
 from .forms import ImageForm
+from django.db.models import Sum, Avg
 
 
 logger = logging.getLogger(__name__)
@@ -109,3 +110,29 @@ def upload_image(request, product_id):
     else:
         form = ImageForm()
     return render(request, 'myapp2/upload_image_product.html', {'form':form})
+
+
+def total_in_db(request):
+    total = Product.objects.aggregate(Sum('quantity'))
+    context = {
+        'title':'Общее количество посчитанно в базе данных',
+        'total': total,
+    }
+    return render(request, 'myapp2/total_count.html', context)
+
+
+def total_in_template(request):
+    context = {
+        'title':'Общее количество посчитанно в шаблоне',
+        'product':Product, 
+    }
+    return render(request, 'myapp2/total_count.html', context)
+
+def total_in_view(request):
+    products = Product.objects.all()
+    total = sum(product.quantity for product in products)
+    context = {
+        'title':'Общее количество посчитанно в представлении',
+        'total': total,
+    }
+    return render(request, 'myapp2/total_count.html', context)
